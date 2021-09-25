@@ -84,7 +84,7 @@ const overlayContainer = document.querySelector('.lightbox__overlay');
 galleryItemsContainer.insertAdjacentHTML("afterbegin", tampleteGalleryItems);
 galleryItemsContainer.addEventListener("click", addClassForModal);
 closeModalBtn.addEventListener("click", onCloseBtnModal);
-// overlayContainer.addEventListener('click', onCloseOverlay);
+overlayContainer.addEventListener('click', onCloseBtnModal);
 
 function listGalleryItem(galleryItems) {
   return galleryItems
@@ -108,34 +108,23 @@ function listGalleryItem(galleryItems) {
 
 function addClassForModal(event) {
   event.preventDefault();
-  if(event.target.nodeName =='IMG') {
+  document.addEventListener('keydown', onEscapeKeydown)
+  if(event.target.nodeName ==='IMG') {
     modalWindow.classList.add("is-open");
   imageEl.src = event.target.dataset.source;
   imageEl.alt = event.target.alt;
    }
    return;
 }
+function onEscapeKeydown(event){
+if (event.code === "Escape") {
+  onCloseBtnModal()
+}
+}
+
 function onCloseBtnModal() {
   modalWindow.classList.remove("is-open");
   imageEl.src = "";
+  document.addEventListener('keydown',onEscapeKeydown);
 }
-// function onCloseOverlay(evt) {
-//   // const ActiveModalWindow = e.target.classList.contains('.lightbox__overlay')
-//   if (evt.target.classList.contains('lightbox__overlay')) {
-//     modal.classList.remove('is-open');
-// }}
-//  
-// if(evt.target.nodeName !== 'BUTTON') {
-//   return;
-// }
-// const nextActiveBtn = e.target;
-// const activeBtnSet = nextActiveBtn.classList.contains('is-open')
-// if (activeBtnSet){
-//   onCloseBtnModal();
-// }
-// }
-// // function addClassForModal(event) {
-// //   const ActiveModalWindow = document.querySelector('.');
 
-
-// // }
