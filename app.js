@@ -79,12 +79,12 @@ const closeModalBtn = document.querySelector(
 );
 const tampleteGalleryItems = listGalleryItem(galleryItems);
 const imageEl = document.querySelector(".lightbox__image");
-const overflowContainer = document.querySelector('.lightbox__overlay');
+const overlayContainer = document.querySelector('.lightbox__overlay');
 
 galleryItemsContainer.insertAdjacentHTML("afterbegin", tampleteGalleryItems);
 galleryItemsContainer.addEventListener("click", addClassForModal);
 closeModalBtn.addEventListener("click", onCloseBtnModal);
-overflowContainer.addEventListener('click', onCloseBtnModal);
+// overlayContainer.addEventListener('click', onCloseOverlay);
 
 function listGalleryItem(galleryItems) {
   return galleryItems
@@ -108,11 +108,34 @@ function listGalleryItem(galleryItems) {
 
 function addClassForModal(event) {
   event.preventDefault();
-  modalWindow.classList.add("is-open");
+  if(event.target.nodeName =='IMG') {
+    modalWindow.classList.add("is-open");
   imageEl.src = event.target.dataset.source;
   imageEl.alt = event.target.alt;
+   }
+   return;
 }
 function onCloseBtnModal() {
   modalWindow.classList.remove("is-open");
   imageEl.src = "";
 }
+// function onCloseOverlay(evt) {
+//   // const ActiveModalWindow = e.target.classList.contains('.lightbox__overlay')
+//   if (evt.target.classList.contains('lightbox__overlay')) {
+//     modal.classList.remove('is-open');
+// }}
+//  
+// if(evt.target.nodeName !== 'BUTTON') {
+//   return;
+// }
+// const nextActiveBtn = e.target;
+// const activeBtnSet = nextActiveBtn.classList.contains('is-open')
+// if (activeBtnSet){
+//   onCloseBtnModal();
+// }
+// }
+// // function addClassForModal(event) {
+// //   const ActiveModalWindow = document.querySelector('.');
+
+
+// // }
