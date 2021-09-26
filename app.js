@@ -80,11 +80,20 @@ const closeModalBtn = document.querySelector(
 const tampleteGalleryItems = listGalleryItem(galleryItems);
 const imageEl = document.querySelector(".lightbox__image");
 const overlayContainer = document.querySelector('.lightbox__overlay');
+const lazyImage = document.querySelectorAll('img[loading="lazy"]');
 
 galleryItemsContainer.insertAdjacentHTML("afterbegin", tampleteGalleryItems);
 galleryItemsContainer.addEventListener("click", addClassForModal);
 closeModalBtn.addEventListener("click", onCloseBtnModal);
 overlayContainer.addEventListener('click', onCloseBtnModal);
+
+lazyImage.forEach( image=> {
+image.addEventListener('load', onImageLoading, {once: true});
+});
+function onImageLoading(evt) {
+  console.log('Картинка загрузилась:', evt);
+  
+}
 
 function listGalleryItem(galleryItems) {
   return galleryItems
@@ -99,6 +108,7 @@ function listGalleryItem(galleryItems) {
       src=${item.preview}
       data-source=${item.original}
       alt=${item.description}
+      loading="lazy"
     />
   </a>
 </li>`
@@ -127,7 +137,34 @@ function onCloseBtnModal() {
   imageEl.src = "";
   document.addEventListener('keydown',onEscapeKeydown);
 }
-
+// ==========================================================
+// document.addEventListener('keydown', (evt)=> {
+//   const currentIndex = galleryItems.findIndex(
+//     (img) => img.original === ImageBox.src);
+//     console.log(evt.code);
+// if( evt.key==="Arrowleft") {
+//   leftClick(currentIndex);
+// }
+// else { rigthClick(currentIndex) }
+// })
+// function leftClick(currentIndex) {
+//   let nextIndex = currentIndex ? currentIndex : 0;
+//   if (nextIndex < galleryItems.length + 1) {
+//     nextIndex -= 1;
+//   } else {
+//     nextIndex = 0;
+//   }}
+//   function rigthClick(currentIndex) {
+//     let nextIndex = currentIndex ? currentIndex : 0;
+//     if (nextIndex < galleryItems.length - 1) {
+//       nextIndex += 1;
+//     } else {
+//       nextIndex = 0;
+//     }
+//   ImageBox.src = galleryItems[nextIndex].original;
+//   imageBox.alt = galleryItems[nextIndex].alt;
+// }
+// ============================================================
 // /* Устанавливаем стартовый индекс слайда по умолчанию: */
 // let slideIndex = 1;
 // /* Вызываем функцию, которая реализована ниже: */
