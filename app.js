@@ -151,7 +151,7 @@ function onEscapeKeydown(event) {
 function onCloseBtnModal() {
   modalWindow.classList.remove("is-open");
   imageEl.src = "";
-  document.addEventListener("keydown", onEscapeKeydown);
+  document.removeEventListener("keydown", onEscapeKeydown);
 }
 
 document.addEventListener("keydown", (evt) => {
