@@ -79,22 +79,38 @@ const closeModalBtn = document.querySelector(
 );
 const tampleteGalleryItems = listGalleryItem(galleryItems);
 const imageEl = document.querySelector(".lightbox__image");
-const overlayContainer = document.querySelector('.lightbox__overlay');
+const overlayContainer = document.querySelector(".lightbox__overlay");
+
 const lazyImage = document.querySelectorAll('img[loading="lazy"]');
-console.log(imageEl);
+
 galleryItemsContainer.insertAdjacentHTML("afterbegin", tampleteGalleryItems);
 galleryItemsContainer.addEventListener("click", addClassForModal);
 closeModalBtn.addEventListener("click", onCloseBtnModal);
-overlayContainer.addEventListener('click', onCloseBtnModal);
+overlayContainer.addEventListener("click", onCloseBtnModal);
 
-lazyImage.forEach( image=> {
-image.addEventListener('load', onImageLoading, {once: true});
+// ==============lazyload=====================
+if ("loading" in HTMLImageElement.prototype) {
+  imageEl.forEach((img) => {
+    img.src = img.dataset.src;
+  });
+} else {
+  const script = document.createElement("script");
+  script.src =
+    "https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js";
+  script.integrity =
+    "sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==";
+  script.crossOrigin = "anonymous";
+  script.referrerPolicy = "no-referrer";
+
+  document.body.appendChild(script);
+}
+lazyImage.forEach((image) => {
+  image.addEventListener("load", onImageLoading, { once: true });
 });
 function onImageLoading(evt) {
-  console.log('Картинка загрузилась:', evt);
-  
+  console.log("Картинка загрузилась:", evt);
 }
-
+// =================================================
 function listGalleryItem(galleryItems) {
   return galleryItems
     .map(
@@ -118,35 +134,35 @@ function listGalleryItem(galleryItems) {
 
 function addClassForModal(event) {
   event.preventDefault();
-  document.addEventListener('keydown', onEscapeKeydown)
-  if(event.target.nodeName ==='IMG') {
+  document.addEventListener("keydown", onEscapeKeydown);
+  if (event.target.nodeName === "IMG") {
     modalWindow.classList.add("is-open");
-  imageEl.src = event.target.dataset.source;
-  imageEl.alt = event.target.alt;
-   }
-   return;
+    imageEl.src = event.target.dataset.source;
+    imageEl.alt = event.target.alt;
+  }
+  return;
 }
-function onEscapeKeydown(event){
-if (event.code === "Escape") {
-  onCloseBtnModal()
-}
+function onEscapeKeydown(event) {
+  if (event.code === "Escape") {
+    onCloseBtnModal();
+  }
 }
 
 function onCloseBtnModal() {
   modalWindow.classList.remove("is-open");
   imageEl.src = "";
-  document.addEventListener('keydown',onEscapeKeydown);
+  document.addEventListener("keydown", onEscapeKeydown);
 }
 
-document.addEventListener('keydown', (evt) => {
+document.addEventListener("keydown", (evt) => {
   const currentIndex = galleryItems.findIndex(
     (img) => img.original === imageEl.src
   );
 
-  if (evt.code === 'ArrowLeft') {
+  if (evt.code === "ArrowLeft") {
     leftClick(currentIndex);
   }
-  if (evt.code === 'ArrowRight') {
+  if (evt.code === "ArrowRight") {
     rightClick(currentIndex);
   }
 });
