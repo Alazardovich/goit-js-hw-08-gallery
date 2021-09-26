@@ -81,7 +81,7 @@ const tampleteGalleryItems = listGalleryItem(galleryItems);
 const imageEl = document.querySelector(".lightbox__image");
 const overlayContainer = document.querySelector('.lightbox__overlay');
 const lazyImage = document.querySelectorAll('img[loading="lazy"]');
-
+console.log(imageEl);
 galleryItemsContainer.insertAdjacentHTML("afterbegin", tampleteGalleryItems);
 galleryItemsContainer.addEventListener("click", addClassForModal);
 closeModalBtn.addEventListener("click", onCloseBtnModal);
@@ -104,7 +104,7 @@ function listGalleryItem(galleryItems) {
     href=${item.original}
   >
     <img
-      class="gallery__image"
+      class="gallery__image lazyload"
       src=${item.preview}
       data-source=${item.original}
       alt=${item.description}
@@ -137,71 +137,37 @@ function onCloseBtnModal() {
   imageEl.src = "";
   document.addEventListener('keydown',onEscapeKeydown);
 }
-// ==========================================================
-// document.addEventListener('keydown', (evt)=> {
-//   const currentIndex = galleryItems.findIndex(
-//     (img) => img.original === ImageBox.src);
-//     console.log(evt.code);
-// if( evt.key==="Arrowleft") {
-//   leftClick(currentIndex);
-// }
-// else { rigthClick(currentIndex) }
-// })
-// function leftClick(currentIndex) {
-//   let nextIndex = currentIndex ? currentIndex : 0;
-//   if (nextIndex < galleryItems.length + 1) {
-//     nextIndex -= 1;
-//   } else {
-//     nextIndex = 0;
-//   }}
-//   function rigthClick(currentIndex) {
-//     let nextIndex = currentIndex ? currentIndex : 0;
-//     if (nextIndex < galleryItems.length - 1) {
-//       nextIndex += 1;
-//     } else {
-//       nextIndex = 0;
-//     }
-//   ImageBox.src = galleryItems[nextIndex].original;
-//   imageBox.alt = galleryItems[nextIndex].alt;
-// }
-// ============================================================
-// /* Устанавливаем стартовый индекс слайда по умолчанию: */
-// let slideIndex = 1;
-// /* Вызываем функцию, которая реализована ниже: */
-// showSlides(slideIndex);
 
-// /* Увеличиваем индекс на 1 — показываем следующий слайд: */
-// function nextSlide() {
-//     showSlides(slideIndex += 1);
-// }
+document.addEventListener('keydown', (evt) => {
+  const currentIndex = galleryItems.findIndex(
+    (img) => img.original === imageEl.src
+  );
 
-// /* Уменьшаем индекс на 1 — показываем предыдущий слайд: */
-// function previousSlide() {
-//     showSlides(slideIndex -= 1);  
-// }
+  if (evt.code === 'ArrowLeft') {
+    leftClick(currentIndex);
+  }
+  if (evt.code === 'ArrowRight') {
+    rightClick(currentIndex);
+  }
+});
+function leftClick(currentIndex) {
+  let nextIndex = currentIndex ? currentIndex : 0;
+  if (nextIndex > 0) {
+    nextIndex -= 1;
+  } else {
+    nextIndex = galleryItems.length - 1;
+  }
 
-// /* Устанавливаем текущий слайд: */
-// function currentSlide(n) {
-//     showSlides(slideIndex = n);
-// }
-
-// /* Функция перелистывания: */
-// function showSlides(n) {
-//     /* Обращаемся к элементам с названием класса "item", то есть к картинкам: */
-//     let slides = document.getElementsByClassName("lightbox__content");
-//     console.log(n);
-//     /* Проверяем количество слайдов: */
-//     if (n > slides.length) {
-//       slideIndex = 1
-//     }
-//     if (n < 1) {
-//         slideIndex = slides.length
-//     }
-  
-//     /* Проходим по каждому слайду в цикле for: */
-//     for (let slide of slides) {
-//         slide.style.display = "none";
-//     }
-//     /* Делаем элемент блочным: */
-//     slides[slideIndex - 1].style.display = "block";    
-// }
+  imageEl.src = galleryItems[nextIndex].original;
+  imageEl.alt = galleryItems[nextIndex].alt;
+}
+function rightClick(currentIndex) {
+  let nextIndex = currentIndex ? currentIndex : 0;
+  if (nextIndex < galleryItems.length - 1) {
+    nextIndex += 1;
+  } else {
+    nextIndex = 0;
+  }
+  imageEl.src = galleryItems[nextIndex].original;
+  imageEl.alt = galleryItems[nextIndex].alt;
+}
